@@ -128,7 +128,7 @@ class App extends React.Component {
           "content": "Veritatis porro minima perspiciatis. Repellat veniam quo iste ut. Iusto voluptas quae quibusdam. Odit neque iusto cupiditate iste quam. Fuga itaque aut praesentium ullam saepe ut et vero.\n \rQuisquam doloremque molestiae. Enim rerum dolorem et velit itaque magnam laborum. Aut officiis porro.\n \rQuae eum eaque error. Sed itaque ipsam nam provident aut voluptate. Perferendis repudiandae sequi laudantium est est animi eum. Unde alias et doloribus est hic et. Sed distinctio incidunt maiores aut voluptatibus et omnis mollitia fugit."
         }
       ],
-      "noteSelected":'',
+      "noteSelected":{},
       "folderOfNote": '',
     }
   }
@@ -145,6 +145,7 @@ class App extends React.Component {
 
   handleClickedNote = (noteId) => {
     const noteItem= this.state.notes.filter(note => note.id == noteId)
+   console.log(Object.keys(noteItem))
     this.setState({noteSelected:noteItem})
     const folderIdOfNote = noteItem[0].folderId;
     const folderOfNote = this.state.folders.filter(folder => folder.id === folderIdOfNote)
@@ -154,7 +155,7 @@ class App extends React.Component {
   }
   render() {
     const { folders, notes, noteSelected, folderOfNote } = this.state;
-    console.log(folderOfNote);
+    
 
   return (
     <div className="App">

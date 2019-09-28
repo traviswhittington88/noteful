@@ -7,13 +7,13 @@ export default class NoteContentPage extends React.Component {
         super(props)
     }
     
+    
         render() {
             
             
             console.log(this.props)
-            console.log(this.props.note)
-            console.log(this.props.note[0])
-            console.log(typeof(this.props.note.name));
+            console.log(typeof(this.props.note))
+          
            
             /*return (
                 <ul className='note_content'>
