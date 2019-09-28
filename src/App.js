@@ -128,7 +128,7 @@ class App extends React.Component {
           "content": "Veritatis porro minima perspiciatis. Repellat veniam quo iste ut. Iusto voluptas quae quibusdam. Odit neque iusto cupiditate iste quam. Fuga itaque aut praesentium ullam saepe ut et vero.\n \rQuisquam doloremque molestiae. Enim rerum dolorem et velit itaque magnam laborum. Aut officiis porro.\n \rQuae eum eaque error. Sed itaque ipsam nam provident aut voluptate. Perferendis repudiandae sequi laudantium est est animi eum. Unde alias et doloribus est hic et. Sed distinctio incidunt maiores aut voluptatibus et omnis mollitia fugit."
         }
       ],
-      "noteSelected":{},
+      noteSelected:{},
       "folderOfNote": '',
     }
   }
@@ -144,9 +144,13 @@ class App extends React.Component {
   }
 
   handleClickedNote = (noteId) => {
-    const noteItem= this.state.notes.filter(note => note.id == noteId)
-   console.log(Object.keys(noteItem))
-    this.setState({noteSelected:noteItem})
+    const noteItem= this.state.notes.filter(note => note.id === noteId)
+   console.log('note-itemArray',noteItem[0]);
+   const tempNoteItem = noteItem[0];
+   console.log('tempNoteItem',tempNoteItem,tempNoteItem.id);
+    /*this.setState({noteSelected:Object.assign({},noteItem[0])}) */
+    const myItem = {id:1,content:'string'}
+    this.setState({noteSelected: tempNoteItem });
     const folderIdOfNote = noteItem[0].folderId;
     const folderOfNote = this.state.folders.filter(folder => folder.id === folderIdOfNote)
                         .map(item => {return item.name} )
@@ -155,6 +159,7 @@ class App extends React.Component {
   }
   render() {
     const { folders, notes, noteSelected, folderOfNote } = this.state;
+    console.log('note-selected',noteSelected.id)
     
 
   return (
@@ -162,6 +167,32 @@ class App extends React.Component {
     <Route 
       exact
       path='/'
+      render={() =>
+        <React.Fragment>
+        <Sidebar 
+        folders={folders}
+        selectFolder={this.handleClickedFolder}
+      />
+      <div className='column__wrapper'>
+        <header 
+          className='App__header' 
+        >
+          <Header
+            clickTitle={this.handleClickedTitle} 
+          />
+        </header>
+        <main className='App__main'>
+          <NoteListPage 
+            notes={notes}
+            selectNote={this.handleClickedNote}
+            />
+        </main>
+      </div>
+      </React.Fragment> }
+      />
+      <Route 
+      exact
+      path='/folder/:foldername'
       render={() =>
         <React.Fragment>
         <Sidebar 

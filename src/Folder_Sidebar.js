@@ -12,7 +12,7 @@ export default function Sidebar(props) {
                 key={folder.id} 
                 className='folderItem'>
                 <Link 
-                  to={`folder/${folder.name}`}
+                  to={`/folder/${folder.name}`}
                   id={folder.id}
                   onClick={(e) => handleClick(e)}
                 >

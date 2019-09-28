@@ -10,13 +10,12 @@ export default class NoteContentPage extends React.Component {
     
         render() {
             
-            
+            const { note } = this.props
             console.log(this.props)
             console.log(typeof(this.props.note))
-          
-           
-            /*return (
-                <ul className='note_content'>
+            console.log('note-data', note.id)
+            return (
+                <ul className='note_ul'>
                   <li key={note.id} className='note_item'>
                     <div className='note'>
                       <Link 
@@ -28,11 +27,17 @@ export default class NoteContentPage extends React.Component {
                       <button className='note_delete'>
                         <p>Remove</p>
                       </button>
-                    </div>
+                      </div>
+                      <section className='note_content'>
+                      <p>{note.content}</p>
+                      </section>
+                        
+                    
+                    
                 </li>
                 </ul>
             );
-            */
-           return <div></div> }
+            
+       }
         
     }

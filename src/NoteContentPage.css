@@ -1,9 +1,12 @@
-.note_content {
+.note_ul {
     list-style: none;
     margin: 0 auto;
     padding-left: 20px;
+    height: 100%;
+    background-color: white;
     
 }
+
 
 .note_item {
     background-color: #030f1f;
