@@ -235,6 +235,25 @@ class App extends React.Component {
               </div>
           </React.Fragment> }
       />
+      <Route
+        path='/folder/note/:notename'
+        render={() => 
+          <React.Fragment>
+            <NoteSidebar folderName={folderOfNote}/>
+             <div className='column__wrapper'>
+              <header className='App__header'>
+                <Header
+                  clickTitle={this.handleClickedTitle} 
+                />
+              </header>
+              <main className='App__main'>
+                <NoteContentPage 
+                  note={noteSelected}
+                />
+              </main>
+              </div>
+          </React.Fragment> }
+      />
     </div> 
   )
  }
