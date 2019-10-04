@@ -1,43 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './NoteContentPage.css';
+import NotefulContext from './NotefulContext'
 
 export default class NoteContentPage extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    
-    
-        render() {
-            
-            const { note } = this.props
-            console.log(this.props)
-            console.log(typeof(this.props.note))
-            console.log('note-data', note.id)
-            return (
-                <ul className='note_ul'>
-                  <li key={note.id} className='note_item'>
-                    <div className='note'>
-                      <Link 
-                        to={`note/${note.name}`}
-                        id={note.id}
-                      >
-                        <h2 className='note_title'>{note.name}</h2>
-                      </Link>
-                      <button className='note_delete'>
-                        <p>Remove</p>
-                      </button>
-                      </div>
-                      <section className='note_content'>
-                      <p>{note.content}</p>
-                      </section>
-                        
-                    
-                    
-                </li>
-                </ul>
-            );
-            
-       }
+  static contextType = NotefulContext;
+  render() {     
+    return (
+      <NotefulContext.Consumer>
+        {(value) => {
         
-    }
+    
+          return (
+            <ul className='note_ul'>
+              <li key={value.noteSelected[0].id} className='note_item'>
+              <div className='note'>
+              <Link 
+                to={`note/${value.noteSelected[0].name}`}
+                id={value.noteSelected[0].id}
+              >
+              <h2 className='note_title'>{value.noteSelected[0].name}</h2>
+              </Link>
+                <button className='note_delete'>
+                  <p>Remove</p>
+                </button>
+              </div>
+              <section className='note_content'>
+                <p>{value.noteSelected[0].content}</p>
+              </section>
+              </li>
+            </ul>
+          )
+        }}
+      </NotefulContext.Consumer>
+    );
+  }
+}

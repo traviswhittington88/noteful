@@ -1,27 +1,37 @@
 import React from 'react';
 import './Folder_Sidebar.css'
 import { Link } from 'react-router-dom';
+import NotefulContext from './NotefulContext';
 
-export default function Sidebar(props) {
-    function handleClick(e) {
-      props.selectFolder(e.target.id)
-    }
+export default class Sidebar extends React.Component  {
+  static contextType = NotefulContext;
 
-    const folderItems = props.folders.map(folder => {
-        return <li 
-                key={folder.id} 
-                className='folderItem'>
-                <Link 
-                  to={`/folder/${folder.name}`}
-                  id={folder.id}
-                  onClick={(e) => handleClick(e)}
-                >
-                  {folder.name}
-                </Link>
-                </li>
-          });
+render() {
+  const { folders } = this.context;
+  const folderItems = folders.map(folder => {
+    return (
+    <NotefulContext.Consumer>
+    {(value) => {
+      console.log(value)
+    return (
+    <li 
+      key={folder.id} 
+      className='folderItem'>
+        <Link 
+          to={`/folder/${folder.name}`}
+          id={folder.id}
+          onClick={(e) => value.selectFolder(e.target.id)}
+        >
+          {folder.name}
+        </Link>
+        </li>
+    )
+      }}
+      </NotefulContext.Consumer>
+    )
+    });
 
-    console.log(props.folders)
+    console.log(this.context.folders)
     return (
         <nav className='App__sidebar'>Sidebar
             <ul className='Sidebar__ul'>
@@ -29,4 +39,5 @@ export default function Sidebar(props) {
             </ul>
         </nav>
     )
+}
 }
