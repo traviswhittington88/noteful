@@ -4,6 +4,9 @@ import './NoteContentPage.css';
 import NotefulContext from './NotefulContext'
 
 export default class NoteContentPage extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   static contextType = NotefulContext;
   render() {     
     return (
@@ -21,7 +24,10 @@ export default class NoteContentPage extends React.Component {
               >
               <h2 className='note_title'>{value.noteSelected[0].name}</h2>
               </Link>
-                <button className='note_delete'>
+                <button className='note_delete'
+                  onClick={()=> {value.onDelete(value.noteSelected[0].id)
+                  this.props.history.push('/')}}
+                >
                   <p>Remove</p>
                 </button>
               </div>

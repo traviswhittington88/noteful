@@ -7,10 +7,11 @@ export default class Sidebar extends React.Component  {
   static contextType = NotefulContext;
 
 render() {
+  
   const { folders } = this.context;
   const folderItems = folders.map(folder => {
     return (
-    <NotefulContext.Consumer>
+    <NotefulContext.Consumer key={folder.id}>
     {(value) => {
       console.log(value)
     return (

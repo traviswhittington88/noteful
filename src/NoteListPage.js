@@ -14,7 +14,7 @@ export default class NoteListPage extends React.Component {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
-
+            console.log('value in NoteListPage',value)
             return (
               <li key={note.id} className='Note_item'>
                 <div className='Note'>
@@ -25,7 +25,9 @@ export default class NoteListPage extends React.Component {
                 >
                 <h2 className='Note_title'>{note.name}</h2>
                 </Link>    
-                <button className='Note_delete'><p>Remove</p></button>     
+                <button className='Note_delete'
+                  onClick={() => value.onDelete(note.id)}
+                ><p>Remove</p></button>     
                 </div>
               </li>
             )
