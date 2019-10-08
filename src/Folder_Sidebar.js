@@ -6,6 +6,7 @@ import NotefulContext from './NotefulContext';
 export default class Sidebar extends React.Component  {
   static contextType = NotefulContext;
 
+
 render() {
   
   const { folders } = this.context;
@@ -13,7 +14,7 @@ render() {
     return (
     <NotefulContext.Consumer key={folder.id}>
     {(value) => {
-      console.log(value)
+
     return (
     <li 
       key={folder.id} 
@@ -32,11 +33,20 @@ render() {
     )
     });
 
-    console.log(this.context.folders)
     return (
-        <nav className='App__sidebar'>Sidebar
+        <nav className='App__sidebar'>
             <ul className='Sidebar__ul'>
               {folderItems}
+              <button
+               type="button" 
+               className="addFolderButton"
+               >
+                <Link 
+                  to={'/addfolder'}
+                >
+                  Add Folder
+                </Link> 
+               </button>
             </ul>
         </nav>
     )

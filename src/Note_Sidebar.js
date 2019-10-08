@@ -13,7 +13,6 @@ export default class NoteSideBar extends React.Component {
     return(
     <NotefulContext.Consumer>
       {(value) => {
-        console.log(value)
       return (
         <nav className='App__sidebar'>
           <div className='NoteContentPageNav'>

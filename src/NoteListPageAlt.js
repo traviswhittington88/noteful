@@ -13,16 +13,16 @@ export default class NoteListPage extends React.Component {
     const { notes } = this.context
     const noteItems = notes.map(note => {
       return (
-        <NotefulContext.Consumer>
+        <NotefulContext.Consumer key={note.id}>
           {(value) => {
-            console.log(value)
+            console.log('this is value obj',value)
             return (
               <li key={note.id} className='Note_item'>
                 <div className='Note'>
                 <Link 
                   to={`/${note.folderId}/note/${note.name}`}
                   id={note.id}
-                  onClick={(e)=> value.selectNote(note.id)}
+                  onClick={(e)=> this.context.selectNote(note.id)}
                 >
                 <h2 className='Note_title'>{note.name}</h2>
                 </Link>    

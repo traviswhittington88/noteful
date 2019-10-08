@@ -14,7 +14,6 @@ export default class NoteListPage extends React.Component {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
-            console.log('value in NoteListPage',value)
             return (
               <li key={note.id} className='Note_item'>
                 <div className='Note'>
@@ -38,6 +37,16 @@ export default class NoteListPage extends React.Component {
 
       <ul className='Note_list'>
         {noteItems}
+        <button
+          type="button" 
+          className="addNoteButton"
+        >
+          <Link 
+            to={'/addnote'}
+          >
+            Add Note
+          </Link> 
+        </button>
       </ul>
     )
    }

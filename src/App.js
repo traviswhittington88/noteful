@@ -10,6 +10,8 @@ import './App.css';
 import dummyStore from './dummy-store';
 import NoteContentPage from './NoteContentPage';
 import NotefulContext from './NotefulContext'
+import AddFolder from './AddFolder';
+import AddNote from './AddNote';
 
 class App extends React.Component {
  constructor(props) {
@@ -17,24 +19,108 @@ class App extends React.Component {
    this.state = {
       folders: [],
       notes: [],
-      
+      error: null,
       noteSelected: [{}],
       folderOfNote: "",
     }
   }
 
+  handleAddNote = (noteName, folderName, content) => {
+    console.log('handleAddNote called');
+   const folderOfNote = this.state.folders.filter(folder => folder.name ===  folderName.toString())
+    console.log(folderOfNote.name)
+    const folderId = folderOfNote[0].id; 
+
+   const obj = {
+      method: 'POST',
+      body: JSON.stringify({name: noteName, folderId: folderId, content: content}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    } 
+    fetch(`http://localhost:9090/notes`,obj)
+    .then(res => {
+      if(!res.ok) {
+        throw new Error(res.statusText)
+      }
+      return res.json();
+     
+    })
+    .then(note => { const newNoteList = this.state.notes.map(note => note);
+      newNoteList.push(note)
+  
+      this.setState({notes: newNoteList});
+      
+
+    })
+    .catch(error => this.setState({error:error.message})) 
+  }
+
+
+
+  handleAddFolder = (folderName) => { 
+    console.log('handleAddFolder ran')
+    
+    const obj = {
+      method: 'POST',
+      body: JSON.stringify({name: folderName}),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    
+    fetch(`http://localhost:9090/folders`,obj)
+    .then(res => {
+      if(!res.ok) {
+        throw new Error(res.statusText)
+      }
+      return res.json();
+    })
+    .then(folder => {
+      console.log(folder);
+      folder.name = folderName
+      const newFolders = this.state.folders.map(folder => {return folder});
+      newFolders.push(folder);
+      this.setState({folders:newFolders})
+      
+      })
+    .catch(error => {this.setState({error: error.message})})
+
+    fetch('http://localhost:9090/folders')
+    .then(res => {
+      if(!res.ok) {
+        throw new Error(res.statusText)
+      }
+      return res.json()
+    })
+    .then(folders => console.log(folders))
+    .catch(err => {this.setState({error: err.message})})
+    console.log(this.state.folders);
+  
+  }
+  
   handleClickedFolder = (folderId) => {
-    const newNoteList = dummyStore.notes.filter(note => note.folderId === folderId)
-    this.setState({notes:newNoteList});
+    console.log('handleClickedFolder called',folderId)
+    const newNoteList = this.state.notes.filter(note => note.folderId === folderId)
+    console.log(newNoteList);
+    this.setState({notes:newNoteList})
+    
   }
 
   handleClickedTitle = () => {
-    console.log('handleClickedTitle was called')
-    this.setState({notes:dummyStore.notes});
-  }
+    fetch('http://localhost:9090/notes')
+    .then(res => {
+      if(!res.ok) {
+        throw new Error(res.statusText)
+      }
+      return res.json()
+    })
+    .then(notes => this.setState({notes: notes}))
+    .catch(err => {this.setState({error: err.message})})
+  } 
 
   handleClickedNote = (noteId) => {
-    console.log('handleClickedNote called')
+   
     const noteItem= this.state.notes.filter(note => note.id === noteId)
     this.setState({noteSelected:noteItem})
     const folderIdOfNote = noteItem[0].folderId;
@@ -45,13 +131,13 @@ class App extends React.Component {
   }
  
   deleteNote = (noteId) => {
-    console.log('deleteNote was called')
+
     const notesRemaining = this.state.notes.filter(note =>  note.id !== noteId)
     this.setState({notes: notesRemaining});
 
   }
   componentDidMount() {
-    console.log('component did mount ran')
+    
     fetch('http://localhost:9090/folders')
     .then(res => {
       if(!res.ok) {
@@ -83,8 +169,10 @@ class App extends React.Component {
       selectFolder: this.handleClickedFolder,
       clickTitle: this.handleClickedTitle,
       onDelete: this.deleteNote,
+      onAddFolder: this.handleAddFolder,
+      onAddNote: this.handleAddNote,
     }
-    
+    console.log(this.state.notes)
   return (
     <div className="App">
     <NotefulContext.Provider value={contextValue}>
@@ -99,6 +187,7 @@ class App extends React.Component {
             <Header/>
           </header>
           <main className='App__main'>
+          
             <NoteListPage/>
           </main>
           </div>
@@ -133,6 +222,7 @@ class App extends React.Component {
           <Header/>
           </header>
           <main className='App__main'>
+          {console.log('contextvaluenotes',contextValue.notes)}
           <NoteListPageAlt/>
           </main>
           </div>
@@ -143,7 +233,6 @@ class App extends React.Component {
         path='/:folderId/note/:notename'
         render={( { history }) => 
           <React.Fragment>
-            {console.log('the /folderid/note/noteid path was called')}
             <NoteSidebar history={history} />
              <div className='column__wrapper'>
               <header className='App__header'>
@@ -157,6 +246,24 @@ class App extends React.Component {
               </div>
           </React.Fragment> }
       />
+
+      <Route
+        path='/addfolder'
+        render={({ history }) => 
+          <React.Fragment>
+            <AddFolder history={history} />
+          </React.Fragment>
+        }
+      />
+
+      <Route 
+        path='/addnote'
+        render={({ history }) => 
+          <React.Fragment>
+            <AddNote history={ history } />
+          </React.Fragment>
+        }
+        />
       </NotefulContext.Provider>
     </div> 
   )

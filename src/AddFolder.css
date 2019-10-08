@@ -1,0 +1,9 @@
+.AddFolderApp {
+    height: 100vh;
+    color: white;
+ 
+}
+
+.AddFolderForm {
+    display: flex;
+}
