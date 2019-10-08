@@ -15,7 +15,7 @@ export default class NoteListPage extends React.Component {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
-            console.log('this is value obj',value)
+           // console.log('this is value obj',value)
             return (
               <li key={note.id} className='Note_item'>
                 <div className='Note'>

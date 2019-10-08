@@ -101,9 +101,11 @@ class App extends React.Component {
   
   handleClickedFolder = (folderId) => {
     console.log('handleClickedFolder called',folderId)
+    console.log('notes in state',this.state.notes)
     const newNoteList = this.state.notes.filter(note => note.folderId === folderId)
-    console.log(newNoteList);
+
     this.setState({notes:newNoteList})
+    console.log('notes in state',this.state.notes)
     
   }
 
@@ -159,7 +161,7 @@ class App extends React.Component {
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
-    
+    console.log('notes in state',this.state.notes)
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.notes,
@@ -172,7 +174,7 @@ class App extends React.Component {
       onAddFolder: this.handleAddFolder,
       onAddNote: this.handleAddNote,
     }
-    console.log(this.state.notes)
+  
   return (
     <div className="App">
     <NotefulContext.Provider value={contextValue}>
@@ -265,6 +267,7 @@ class App extends React.Component {
         }
         />
       </NotefulContext.Provider>
+
     </div> 
   )
  }
