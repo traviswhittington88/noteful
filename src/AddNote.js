@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NotefulContext from './NotefulContext';
 import './AddNote.css';
+import ErrorBoundary from './ErrorBoundary';
 
 class AddNote extends React.Component {
   
@@ -27,6 +28,7 @@ class AddNote extends React.Component {
         
         return (
             <div className='addNoteApp'>
+                <ErrorBoundary>
                 <NotefulContext.Consumer>
                     {(value) => {
                         const folderOptions = value.folders.map(folder => 
@@ -49,8 +51,9 @@ class AddNote extends React.Component {
                               <input type="submit" defaultValue="Submit" className="submitButton"></input>
                             </form>
                         )
-                    }}
+                    }} 
                 </NotefulContext.Consumer>
+                </ErrorBoundary>
             </div>
         )
     }

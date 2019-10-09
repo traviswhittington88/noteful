@@ -12,6 +12,7 @@ import NoteContentPage from './NoteContentPage';
 import NotefulContext from './NotefulContext'
 import AddFolder from './AddFolder';
 import AddNote from './AddNote';
+import ErrorBoundary from './ErrorBoundary';
 
 class App extends React.Component {
  constructor(props) {
@@ -19,6 +20,7 @@ class App extends React.Component {
    this.state = {
       folders: [],
       notes: [],
+      newNotes: [],
       error: null,
       noteSelected: [{}],
       folderOfNote: "",
@@ -100,13 +102,8 @@ class App extends React.Component {
   }
   
   handleClickedFolder = (folderId) => {
-    console.log('handleClickedFolder called',folderId)
-    console.log('notes in state',this.state.notes)
     const newNoteList = this.state.notes.filter(note => note.folderId === folderId)
-
-    this.setState({notes:newNoteList})
-    console.log('notes in state',this.state.notes)
-    
+    this.setState({newNotes:newNoteList})
   }
 
   handleClickedTitle = () => {
@@ -157,14 +154,14 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes}))
+    .then(notes => this.setState({notes: notes, newNotes: notes}))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
     console.log('notes in state',this.state.notes)
     const contextValue = {
       folders: this.state.folders,
-      notes: this.state.notes,
+      notes: this.state.newNotes,
       noteSelected: this.state.noteSelected,
       folderOfNote: this.state.folderOfNote,
       selectNote: this.handleClickedNote,
@@ -177,6 +174,7 @@ class App extends React.Component {
   
   return (
     <div className="App">
+    <ErrorBoundary>
     <NotefulContext.Provider value={contextValue}>
     <Route 
       exact
@@ -267,7 +265,7 @@ class App extends React.Component {
         }
         />
       </NotefulContext.Provider>
-
+      </ErrorBoundary>
     </div> 
   )
  }
