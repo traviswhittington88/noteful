@@ -21,7 +21,7 @@ class App extends React.Component {
       folders: [],
       notes: [],
       newNotes: [],
-      otherNoteList: [],
+      notesOfFolder:[],
       error: null,
       noteSelected: [{}],
       folderOfNote: "",
@@ -48,7 +48,7 @@ class App extends React.Component {
       return res.json();
      
     })
-    .then(newNote => {  const noteList = this.state.otherNoteList.map(note => {return note})
+    .then(newNote => {  const noteList = this.state.newNotes.map(note => {return note})
                 noteList.push(newNote)
                 this.setState({ newNotes: noteList})
                
@@ -83,9 +83,9 @@ class App extends React.Component {
     .then(folder => {
       console.log(folder);
       folder.name = folderName
-      const newFolders = this.state.folders.map(folder => {return folder});
-      newFolders.push(folder);
-      this.setState({folders:newFolders})
+      const newFoldersList = this.state.folders.map(folder => {return folder});
+      newFoldersList.push(folder);
+      this.setState({newFolders:newFoldersList})
       
       })
     .catch(error => {this.setState({error: error.message})})
@@ -104,8 +104,8 @@ class App extends React.Component {
   }
   
   handleClickedFolder = (folderId) => {
-    const newNoteList = this.state.notes.filter(note => note.folderId === folderId)
-    this.setState({newNotes:newNoteList})
+    const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
+    this.setState({notesOfFolder:newNoteList})
   }
 
   handleClickedTitle = () => {
@@ -116,7 +116,7 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes}))
+    .then(notes => this.setState({newNotes:notes}))
     .catch(err => {this.setState({error: err.message})})
   } 
 
@@ -157,13 +157,15 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes, otherNoteList: notes}))
+    .then(notes => this.setState({notes: notes, newNotes: notes }))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.newNotes,
+      notesOfFolder: this.state.notesOfFolder,
+      newestNotes: this.state.newestNotes,
       noteSelected: this.state.noteSelected,
       folderOfNote: this.state.folderOfNote,
       selectNote: this.handleClickedNote,

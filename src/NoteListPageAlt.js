@@ -10,8 +10,8 @@ export default class NoteListPage extends React.Component {
    static contextType = NotefulContext;
    render() {
     console.log('NoteListPageAlt was called')
-    const { notes } = this.context
-    const noteItems = notes.map(note => {
+    const { notesOfFolder } = this.context
+    const noteItems = notesOfFolder.map(note => {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
@@ -20,6 +20,7 @@ export default class NoteListPage extends React.Component {
               <li key={note.id} className='Note_item'>
                 <div className='Note'>
                 <Link 
+                  label="folderIdOfNote/note/noteName"
                   to={`/${note.folderId}/note/${note.name}`}
                   id={note.id}
                   onClick={(e)=> this.context.selectNote(note.id)}
@@ -42,6 +43,7 @@ export default class NoteListPage extends React.Component {
           className="addNoteButton"
         >
           <Link 
+            label="addnote"
             to={'/addnote'}
           >
             Add Note

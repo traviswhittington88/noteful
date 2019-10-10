@@ -18,6 +18,7 @@ export default class NoteListPage extends React.Component {
               <li key={note.id} className='Note_item'>
                 <div className='Note'>
                 <Link 
+                  name="note/notename"
                   to={`note/${note.name}`}
                   id={note.id}
                   onClick={(e)=> value.selectNote(note.id)}
@@ -42,6 +43,7 @@ export default class NoteListPage extends React.Component {
           className="addNoteButton"
         >
           <Link 
+            name="addnote"
             to={'/addnote'}
           >
             Add Note
