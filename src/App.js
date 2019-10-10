@@ -105,6 +105,7 @@ class App extends React.Component {
   
   handleClickedFolder = (folderId) => {
     const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
+    console.log(newNoteList);
     this.setState({notesOfFolder:newNoteList})
   }
 
