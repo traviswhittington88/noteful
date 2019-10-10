@@ -21,6 +21,7 @@ class App extends React.Component {
       folders: [],
       notes: [],
       newNotes: [],
+      otherNoteList: [],
       error: null,
       noteSelected: [{}],
       folderOfNote: "",
@@ -29,11 +30,10 @@ class App extends React.Component {
 
   handleAddNote = (noteName, folderName, content) => {
     console.log('handleAddNote called');
-   const folderOfNote = this.state.folders.filter(folder => folder.name ===  folderName.toString())
-    console.log(folderOfNote.name)
-    const folderId = folderOfNote[0].id; 
-
-   const obj = {
+    const folderOfNote = this.state.folders.filter(folder => {return folder.name ===  folderName})
+    const folderId = folderOfNote[0].id;  
+    
+    const obj = {
       method: 'POST',
       body: JSON.stringify({name: noteName, folderId: folderId, content: content}),
       headers: {
@@ -48,15 +48,17 @@ class App extends React.Component {
       return res.json();
      
     })
-    .then(note => { const newNoteList = this.state.notes.map(note => note);
-      newNoteList.push(note)
-  
-      this.setState({notes: newNoteList});
-      
+    .then(newNote => {  const noteList = this.state.otherNoteList.map(note => {return note})
+                noteList.push(newNote)
+                this.setState({ newNotes: noteList})
+               
+      })
 
-    })
-    .catch(error => this.setState({error:error.message})) 
-  }
+          .catch(error => this.setState({error:error.message})) 
+
+  
+      }
+
 
 
 
@@ -120,7 +122,7 @@ class App extends React.Component {
 
   handleClickedNote = (noteId) => {
    
-    const noteItem= this.state.notes.filter(note => note.id === noteId)
+    const noteItem= this.state.newNotes.filter(note => note.id === noteId)
     this.setState({noteSelected:noteItem})
     const folderIdOfNote = noteItem[0].folderId;
     const folderOfNote = this.state.folders.filter(folder => folder.id === folderIdOfNote)
@@ -135,6 +137,7 @@ class App extends React.Component {
     this.setState({notes: notesRemaining});
 
   }
+
   componentDidMount() {
     
     fetch('http://localhost:9090/folders')
@@ -154,11 +157,10 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes}))
+    .then(notes => this.setState({notes: notes, newNotes: notes, otherNoteList: notes}))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
-    console.log('notes in state',this.state.notes)
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.newNotes,

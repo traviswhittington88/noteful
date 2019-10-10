@@ -16,12 +16,16 @@ class AddNote extends React.Component {
     }
 
   
+
+    
     handleSubmit(event) {
         event.preventDefault();
         const noteName = this.noteNameInput.current.value;
         const folderOfNote = this.folderOfNoteInput.current.value;
         const noteContent = this.noteContentInput.current.value;
+        console.log(folderOfNote,typeof(folderOfNote));
         this.context.onAddNote(noteName,folderOfNote,noteContent);
+        
     }
 
     render() {
@@ -30,6 +34,8 @@ class AddNote extends React.Component {
             <div className='addNoteApp'>
                 <NotefulContext.Consumer>
                     {(value) => {
+                        console.log(this.props.history)
+                        console.log(value)
                         const folderOptions = value.folders.map(folder => 
                             <option key={folder.id} 
                             onChange={(e) => this.handleOptionChange(e)}
@@ -37,7 +43,7 @@ class AddNote extends React.Component {
                             {folder.name}</option>);
                         return(
                             <form className='addNoteForm' onSubmit={(e) => {this.handleSubmit(e) 
-                              this.props.history.push('/')}}>
+                              this.props.history.goBack('/')}}>
                               <h3>Add a note below!</h3>
                               <label htmlFor='noteName'>Note Name:</label>
                               <input 
