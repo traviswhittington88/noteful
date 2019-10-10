@@ -35,9 +35,18 @@ export default class NoteListPage extends React.Component {
         </NotefulContext.Consumer>
       )})
     return (
-
       <ul className='Note_list'>
         {noteItems}
+        <button
+          type="button" 
+          className="addNoteButton"
+        >
+          <Link 
+            to={'/addnote'}
+          >
+            Add Note
+          </Link> 
+        </button>
       </ul>
     )
    }
