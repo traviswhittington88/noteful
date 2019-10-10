@@ -265,10 +265,10 @@ class App extends React.Component {
         }
         />
       </NotefulContext.Provider>
-      </ErrorBoundary>
+      </ErrorBoundary>   
     </div> 
   )
  }
 }
 
-export default App;
+export default App;    

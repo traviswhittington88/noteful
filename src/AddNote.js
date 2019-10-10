@@ -28,7 +28,6 @@ class AddNote extends React.Component {
         
         return (
             <div className='addNoteApp'>
-                <ErrorBoundary>
                 <NotefulContext.Consumer>
                     {(value) => {
                         const folderOptions = value.folders.map(folder => 
@@ -41,7 +40,22 @@ class AddNote extends React.Component {
                               this.props.history.push('/')}}>
                               <h3>Add a note below!</h3>
                               <label htmlFor='noteName'>Note Name:</label>
-                              <input type='text' name='noteName' ref={this.noteNameInput} defaultValue="My New Note" required/>
+                              <input 
+                                type='text'
+                                id="noteName" 
+                                name='noteName' 
+                                aria-label="Name of note"
+                                aria-required="true"
+                                aria-describedby="nnError"
+                                ref={this.noteNameInput} 
+                                defaultValue="My New Note" 
+                                required
+                                />
+                                <div
+                                className="errorMessage"
+                                id="nnError">
+                                    Please enter a note name
+                                </div>
                               <label htmlFor='folderOfNote'>Folder name of note:</label>
                               <select ref={this.folderOfNoteInput}>
                                 {folderOptions}
@@ -49,11 +63,11 @@ class AddNote extends React.Component {
                               <label htmlFor='noteContent'>Note Content:</label>
                               <textarea ref={this.noteContentInput}></textarea>
                               <input type="submit" defaultValue="Submit" className="submitButton"></input>
+                              <div id="noteNameConstraint">Must enter a note name!</div>
                             </form>
                         )
                     }} 
                 </NotefulContext.Consumer>
-                </ErrorBoundary>
             </div>
         )
     }
