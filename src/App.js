@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import NoteListPage from './NoteListPage'
 import NoteListPageAlt from './NoteListPageAlt'
 import Header from './Header'
@@ -7,7 +7,6 @@ import Sidebar from './Folder_Sidebar'
 import NoteSidebar from './Note_Sidebar'
 import './dummy-store'
 import './App.css';
-import dummyStore from './dummy-store';
 import NoteContentPage from './NoteContentPage';
 import NotefulContext from './NotefulContext'
 import AddFolder from './AddFolder';
@@ -21,6 +20,7 @@ class App extends React.Component {
       folders: [],
       notes: [],
       newNotes: [],
+      notesRemaining: [],
       notesOfFolder:[],
       error: null,
       noteSelected: [{}],
@@ -29,7 +29,6 @@ class App extends React.Component {
   }
 
   handleAddNote = (noteName, folderName, content) => {
-    console.log('handleAddNote called');
     const folderOfNote = this.state.folders.filter(folder => {return folder.name ===  folderName})
     const folderId = folderOfNote[0].id;  
     
@@ -59,12 +58,7 @@ class App extends React.Component {
   
       }
 
-
-
-
   handleAddFolder = (folderName) => { 
-    console.log('handleAddFolder ran')
-    
     const obj = {
       method: 'POST',
       body: JSON.stringify({name: folderName}),
@@ -81,7 +75,6 @@ class App extends React.Component {
       return res.json();
     })
     .then(folder => {
-      console.log(folder);
       folder.name = folderName
       const newFoldersList = this.state.folders.map(folder => {return folder});
       newFoldersList.push(folder);
@@ -99,13 +92,10 @@ class App extends React.Component {
     })
     .then(folders => console.log(folders))
     .catch(err => {this.setState({error: err.message})})
-    console.log(this.state.folders);
-  
   }
   
   handleClickedFolder = (folderId) => {
     const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
-    console.log(newNoteList);
     this.setState({notesOfFolder:newNoteList})
   }
 
@@ -133,9 +123,8 @@ class App extends React.Component {
   }
  
   deleteNote = (noteId) => {
-
-    const notesRemaining = this.state.notes.filter(note =>  note.id !== noteId)
-    this.setState({notes: notesRemaining});
+    const notesRemaining = this.state.newNotes.filter(note =>  note.id !== noteId)
+    this.setState({newNotes: notesRemaining});
 
   }
 
@@ -158,13 +147,14 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes }))
+    .then(notes => this.setState({notes: notes, newNotes: notes, notesRemaining: notes }))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.newNotes,
+      notesRemaining: this.state.notesRemaining,
       notesOfFolder: this.state.notesOfFolder,
       newestNotes: this.state.newestNotes,
       noteSelected: this.state.noteSelected,
@@ -191,8 +181,7 @@ class App extends React.Component {
           <header className='App__header'>
             <Header/>
           </header>
-          <main className='App__main'>
-          
+          <main className='App__main'> 
             <NoteListPage/>
           </main>
           </div>
@@ -200,6 +189,7 @@ class App extends React.Component {
       />
 
     <Route
+        exact
         path='/note/:notename'
         render={({ history }) => 
           <React.Fragment>
@@ -227,7 +217,6 @@ class App extends React.Component {
           <Header/>
           </header>
           <main className='App__main'>
-          {console.log('contextvaluenotes',contextValue.notes)}
           <NoteListPageAlt/>
           </main>
           </div>
@@ -269,6 +258,7 @@ class App extends React.Component {
           </React.Fragment>
         }
         />
+     
       </NotefulContext.Provider>
       </ErrorBoundary>   
     </div> 

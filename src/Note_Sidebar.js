@@ -3,13 +3,8 @@ import './Note_Sidebar.css';
 import NotefulContext from './NotefulContext';
 
 export default class NoteSideBar extends React.Component {
-    constructor(props) {
-      super(props)
-    }
     static contextType = NotefulContext;
     render() {
-    const { folderName } = this.context;
-    
     return(
     <NotefulContext.Consumer>
       {(value) => {

@@ -4,18 +4,13 @@ import { Link } from 'react-router-dom'
 import NotefulContext from './NotefulContext';
 
 export default class NoteListPage extends React.Component {
-  constructor(props) {
-    super(props)
-  }
    static contextType = NotefulContext;
    render() {
-    console.log('NoteListPageAlt was called')
     const { notesOfFolder } = this.context
     const noteItems = notesOfFolder.map(note => {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
-           // console.log('this is value obj',value)
             return (
               <li key={note.id} className='Note_item'>
                 <div className='Note'>

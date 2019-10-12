@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom'
 import NotefulContext from './NotefulContext';
 
 export default class NoteListPage extends React.Component {
- 
    static contextType = NotefulContext;
    render() {
-    const { notes } = this.context
-    const noteItems = notes.map(note => {
+    const { notesRemaining } = this.context
+    const noteItems = notesRemaining.map(note => {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
@@ -22,10 +21,19 @@ export default class NoteListPage extends React.Component {
                   onClick={(e)=> value.selectNote(note.id)}
                 >
                 <h2 className='Note_title'>{note.name}</h2>
-                </Link>    
+                </Link>
+                <Link
+                  name="onDelete"
+                  to={`/delete/${note.name}`}
+                  id={note.id}
+                >
                 <button className='Note_delete'
                   onClick={() => value.onDelete(note.id)}
-                ><p>Remove</p></button>     
+                >
+                  <p>Remove</p>
+                </button>  
+                </Link>    
+                     
                 </div>
               </li>
             )

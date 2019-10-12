@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import NotefulContext from './NotefulContext';
 import './AddNote.css';
-import ErrorBoundary from './ErrorBoundary';
 
 class AddNote extends React.Component {
   
@@ -23,7 +21,6 @@ class AddNote extends React.Component {
         const noteName = this.noteNameInput.current.value;
         const folderOfNote = this.folderOfNoteInput.current.value;
         const noteContent = this.noteContentInput.current.value;
-        console.log(folderOfNote,typeof(folderOfNote));
         this.context.onAddNote(noteName,folderOfNote,noteContent);
         
     }
@@ -34,8 +31,6 @@ class AddNote extends React.Component {
             <div className='addNoteApp'>
                 <NotefulContext.Consumer>
                     {(value) => {
-                        console.log(this.props.history)
-                        console.log(value)
                         const folderOptions = value.folders.map(folder => 
                             <option key={folder.id} 
                             onChange={(e) => this.handleOptionChange(e)}
@@ -67,7 +62,7 @@ class AddNote extends React.Component {
                                 {folderOptions}
                               </select>
                               <label htmlFor='noteContent'>Note Content:</label>
-                              <textarea ref={this.noteContentInput}></textarea>
+                              <textarea ref={this.noteContentInput} required></textarea>
                               <input type="submit" defaultValue="Submit" className="submitButton"></input>
                               <div id="noteNameConstraint">Must enter a note name!</div>
                             </form>

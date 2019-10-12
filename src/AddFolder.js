@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './AddFolder.css';
 import NotefulContext from './NotefulContext';
 
@@ -28,7 +27,7 @@ export default class AddFolder extends React.Component {
           }}
           >
           <label htmlFor="folderName">Folder Name: 
-          <input type="text" name="folderName" ref={this.folderNameInput}/>
+          <input type="text" name="folderName" ref={this.folderNameInput} required />
           </label>
           <input type="submit" defaultValue="Submit"  />
           </form>) 
