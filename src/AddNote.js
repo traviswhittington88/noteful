@@ -1,6 +1,7 @@
 import React from 'react';
 import NotefulContext from './NotefulContext';
 import './AddNote.css';
+import PropTypes from 'prop-types';
 
 class AddNote extends React.Component {
   
@@ -73,3 +74,6 @@ class AddNote extends React.Component {
 
 export default AddNote;
 
+AddNote.propTypes = {
+    history: PropTypes.object.isRequired,
+}

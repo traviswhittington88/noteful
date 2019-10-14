@@ -179,7 +179,7 @@ handleAddNote = (noteName, folderName, content) => {
   return (
     <div className="App">
     <ErrorBoundary>
-    <NotefulContext.Provider value={contextValue}>
+    <NotefulContext.Provider value={ contextValue }>
     <Route 
       exact
       path='/'
@@ -202,13 +202,13 @@ handleAddNote = (noteName, folderName, content) => {
         path='/note/:notename'
         render={({ history }) => 
           <React.Fragment>
-            <NoteSidebar history={history }/>
+            <NoteSidebar history={ history }/>
              <div className='column__wrapper'>
               <header className='App__header'>
                 <Header/>
               </header>
               <main className='App__main'>
-                <NoteContentPage history={history}/>
+                <NoteContentPage history={ history }/>
               </main>
               </div>
           </React.Fragment> }
@@ -218,7 +218,7 @@ handleAddNote = (noteName, folderName, content) => {
       path='/folder/:foldername'
       render={( { match }) =>
         <React.Fragment>
-          <Sidebar match={match} />
+          <Sidebar />
           <div className='column__wrapper'>
           <header 
             className='App__header' 
@@ -236,7 +236,7 @@ handleAddNote = (noteName, folderName, content) => {
         path='/:folderId/note/:notename'
         render={( { history }) => 
           <React.Fragment>
-            <NoteSidebar history={history} />
+            <NoteSidebar history={ history } />
              <div className='column__wrapper'>
               <header className='App__header'>
                 <Header
@@ -244,7 +244,7 @@ handleAddNote = (noteName, folderName, content) => {
                 />
               </header>
               <main className='App__main'>
-                <NoteContentPage history={history}/>
+                <NoteContentPage history={ history }/>
               </main>
               </div>
           </React.Fragment> }
@@ -254,7 +254,7 @@ handleAddNote = (noteName, folderName, content) => {
         path='/addfolder'
         render={({ history }) => 
           <React.Fragment>
-            <AddFolder history={history} />
+            <AddFolder history={ history } />
           </React.Fragment>
         }
       />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './NoteContentPage.css';
 import NotefulContext from './NotefulContext'
+import PropTypes from 'prop-types';
 
 export default class NoteContentPage extends React.Component {
   static contextType = NotefulContext;
@@ -37,3 +38,7 @@ export default class NoteContentPage extends React.Component {
     );
   }
 }
+
+NoteContentPage.propTypes = { 
+  history: PropTypes.object.isRequired,
+};
