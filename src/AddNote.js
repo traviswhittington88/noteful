@@ -19,7 +19,7 @@ class AddNote extends React.Component {
         const folderOfNote = this.folderOfNoteInput.current.value;
         const noteContent = this.noteContentInput.current.value;
         this.context.onAddNote(noteName,folderOfNote,noteContent);
-        this.props.history.push(`folder/${folderOfNote}`);
+        this.props.history.goBack();
     }
 
     render() {

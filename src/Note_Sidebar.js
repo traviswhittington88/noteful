@@ -13,7 +13,7 @@ export default class NoteSideBar extends React.Component {
           <div className='NoteContentPageNav'>
             <button 
               className='NavCircleButton'
-              onClick={() => {this.props.history.push('/')}}
+              onClick={() => {this.props.history.goBack()}}
             >
               Back
             </button>

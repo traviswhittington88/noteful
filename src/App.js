@@ -50,6 +50,9 @@ handleAddNote = (noteName, folderName, content) => {
     })
     .then(newNote => {  const noteList = this.state.newNotes.map(note => {return note})
                 noteList.push(newNote)
+                const notesInFolderList = this.state.notesInFolder.map(note => {return note})
+                notesInFolderList.push(newNote)
+                this.setState({notesInFolder: notesInFolderList})
                 this.setState({ newNotes: noteList })
                
       }).catch(error => this.setState({error:error.message})) 
@@ -95,11 +98,8 @@ handleAddNote = (noteName, folderName, content) => {
   }
   
   handleClickedFolder = (folderId, name) => {
-
     const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
-    console.log(newNoteList);
-    console.log('path',name)
-    this.setState({ newNotes:newNoteList, folderName:name})
+    this.setState({ notesInFolder:newNoteList, folderName:name})
   }
 
   handleClickedTitle = () => {
@@ -156,7 +156,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes, notesInFolder: notes }))
+    .then(notes => this.setState({notes: notes, newNotes: notes }))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
