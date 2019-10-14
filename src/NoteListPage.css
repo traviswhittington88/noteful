@@ -38,6 +38,7 @@
     font-size: 20px;
     margin: 0;
     padding-left: 5px;
+    padding-bottom: 10px;
 }
 
 .Note_delete {
@@ -63,3 +64,10 @@
     color: #b5b3b3;
     text-decoration: none;
 }
+
+.modified, .datePre {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-top: 10px;
+}
+

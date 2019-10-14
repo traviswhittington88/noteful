@@ -47,7 +47,7 @@ class AddNote extends React.Component {
                                 aria-required="true"
                                 aria-describedby="nnError"
                                 ref={this.noteNameInput} 
-                                defaultValue="My New Note" 
+                                placeholder="My New Note" 
                                 required
                                 />
                                 <div

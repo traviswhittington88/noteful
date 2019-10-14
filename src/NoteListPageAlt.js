@@ -2,6 +2,8 @@ import React from 'react';
 import './NoteListPage.css'
 import { Link } from 'react-router-dom'
 import NotefulContext from './NotefulContext';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 export default class NoteListPage extends React.Component {
    static contextType = NotefulContext;
@@ -23,6 +25,11 @@ export default class NoteListPage extends React.Component {
                   onClick={(e)=> this.context.selectNote(note.id)}
                 >
                 <h2 className='Note_title'>{note.name}</h2>
+                <p 
+                    className = 'datePre'
+                  >
+                    Date modified on<Moment interval={0} format="Do MMM YYYY" className='modified'>{note.modified}</Moment> 
+                  </p> 
                 </Link>    
                 <button className='Note_delete'
                   onClick={()=> value.onDelete(note.id)}><p>Remove</p></button>     
