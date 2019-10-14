@@ -2,7 +2,7 @@ import React from 'react';
 import NotefulContext from './NotefulContext';
 import './AddNote.css';
 
-class AddNote extends React.Component {
+class AddNoteAlt extends React.Component {
   
     static contextType = NotefulContext;
 
@@ -19,7 +19,7 @@ class AddNote extends React.Component {
         const folderOfNote = this.folderOfNoteInput.current.value;
         const noteContent = this.noteContentInput.current.value;
         this.context.onAddNote(noteName,folderOfNote,noteContent);
-        this.props.history.push(`folder/${folderOfNote}`);
+        this.props.history.push(`/folder/${folderOfNote}`)
     }
 
     render() {
@@ -71,5 +71,5 @@ class AddNote extends React.Component {
     }
 }
 
-export default AddNote;
+export default AddNoteAlt;
 

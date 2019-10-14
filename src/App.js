@@ -20,18 +20,19 @@ class App extends React.Component {
       folders: [],
       notes: [],
       newNotes: [],
-      notesRemaining: [],
-      notesOfFolder:[],
+      notesInFolder: [],
+      newFolders: [],
       error: null,
       noteSelected: [{}],
       folderOfNote: "",
+      folderName:'',
     }
   }
 
-  handleAddNote = (noteName, folderName, content) => {
-    const folderOfNote = this.state.folders.filter(folder => {return folder.name ===  folderName})
+handleAddNote = (noteName, folderName, content) => {
+    const folderOfNote = this.state.newFolders.filter(folder => {return folder.name ===  folderName})
     const folderId = folderOfNote[0].id;  
-    
+
     const obj = {
       method: 'POST',
       body: JSON.stringify({name: noteName, folderId: folderId, content: content}),
@@ -49,13 +50,9 @@ class App extends React.Component {
     })
     .then(newNote => {  const noteList = this.state.newNotes.map(note => {return note})
                 noteList.push(newNote)
-                this.setState({ newNotes: noteList})
+                this.setState({ newNotes: noteList })
                
-      })
-
-          .catch(error => this.setState({error:error.message})) 
-
-  
+      }).catch(error => this.setState({error:error.message})) 
       }
 
   handleAddFolder = (folderName) => { 
@@ -75,8 +72,9 @@ class App extends React.Component {
       return res.json();
     })
     .then(folder => {
+      console.log(folder);
       folder.name = folderName
-      const newFoldersList = this.state.folders.map(folder => {return folder});
+      const newFoldersList = this.state.newFolders.map(folder => {return folder});
       newFoldersList.push(folder);
       this.setState({newFolders:newFoldersList})
       
@@ -92,11 +90,16 @@ class App extends React.Component {
     })
     .then(folders => console.log(folders))
     .catch(err => {this.setState({error: err.message})})
+    console.log(this.state.folders);
+  
   }
   
-  handleClickedFolder = (folderId) => {
+  handleClickedFolder = (folderId, name) => {
+
     const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
-    this.setState({notesOfFolder:newNoteList})
+    console.log(newNoteList);
+    console.log('path',name)
+    this.setState({ newNotes:newNoteList, folderName:name})
   }
 
   handleClickedTitle = () => {
@@ -116,16 +119,22 @@ class App extends React.Component {
     const noteItem= this.state.newNotes.filter(note => note.id === noteId)
     this.setState({noteSelected:noteItem})
     const folderIdOfNote = noteItem[0].folderId;
-    const folderOfNote = this.state.folders.filter(folder => folder.id === folderIdOfNote)
+    const folderOfNote = this.state.newFolders.filter(folder => folder.id === folderIdOfNote)
                         .map(item => {return item.name} )
     const folderName = folderOfNote.join();
     this.setState({folderOfNote: folderName});
   }
  
   deleteNote = (noteId) => {
+    console.log('deleteNote clicked')
     const notesRemaining = this.state.newNotes.filter(note =>  note.id !== noteId)
     this.setState({newNotes: notesRemaining});
 
+  }
+
+
+  updatePath(path) {
+    this.setState({path})
   }
 
   componentDidMount() {
@@ -137,7 +146,7 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(folders => this.setState({folders:folders}))
+    .then(folders => this.setState({folders:folders, newFolders: folders}))
     .catch(err => {this.setState({error: err.message})})
 
     fetch('http://localhost:9090/notes')
@@ -147,16 +156,14 @@ class App extends React.Component {
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes, notesRemaining: notes }))
+    .then(notes => this.setState({notes: notes, newNotes: notes, notesInFolder: notes }))
     .catch(err => {this.setState({error: err.message})})
   }
   render() {
     const contextValue = {
-      folders: this.state.folders,
+      folders: this.state.newFolders,
       notes: this.state.newNotes,
-      notesRemaining: this.state.notesRemaining,
-      notesOfFolder: this.state.notesOfFolder,
-      newestNotes: this.state.newestNotes,
+      notesInFolder: this.state.notesInFolder,
       noteSelected: this.state.noteSelected,
       folderOfNote: this.state.folderOfNote,
       selectNote: this.handleClickedNote,
@@ -165,6 +172,8 @@ class App extends React.Component {
       onDelete: this.deleteNote,
       onAddFolder: this.handleAddFolder,
       onAddNote: this.handleAddNote,
+      path: this.state.path,
+      updatePath: this.updatePath,
     }
   
   return (
@@ -207,9 +216,9 @@ class App extends React.Component {
 
       <Route 
       path='/folder/:foldername'
-      render={() =>
+      render={( { match }) =>
         <React.Fragment>
-          <Sidebar />
+          <Sidebar match={match} />
           <div className='column__wrapper'>
           <header 
             className='App__header' 
@@ -258,7 +267,7 @@ class App extends React.Component {
           </React.Fragment>
         }
         />
-     
+
       </NotefulContext.Provider>
       </ErrorBoundary>   
     </div> 

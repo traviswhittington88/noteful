@@ -7,6 +7,7 @@ export default class NoteListPage extends React.Component {
  
    static contextType = NotefulContext;
    render() {
+     console.log('notelistpage called')
     const { notes } = this.context
     const noteItems = notes.map(note => {
       return (

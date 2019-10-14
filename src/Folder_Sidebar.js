@@ -6,7 +6,7 @@ import NotefulContext from './NotefulContext';
 export default class Sidebar extends React.Component  {
   static contextType = NotefulContext;
 
-
+handle
 render() {
   
   const { folders } = this.context;
@@ -22,7 +22,7 @@ render() {
         <Link 
           to={`/folder/${folder.name}`}
           id={folder.id}
-          onClick={(e) => value.selectFolder(e.target.id)}
+          onClick={(e) => { value.selectFolder(folder.id,folder.name) }}
         >
           {folder.name}
         </Link>

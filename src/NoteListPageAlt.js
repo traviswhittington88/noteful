@@ -6,8 +6,9 @@ import NotefulContext from './NotefulContext';
 export default class NoteListPage extends React.Component {
    static contextType = NotefulContext;
    render() {
-    const { notesOfFolder } = this.context
-    const noteItems = notesOfFolder.map(note => {
+    {console.log('notelistpagealt called')}
+    const { notes } = this.context
+    const noteItems = notes.map(note => {
       return (
         <NotefulContext.Consumer key={note.id}>
           {(value) => {
