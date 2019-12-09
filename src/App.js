@@ -128,10 +128,9 @@ handleAddNote = (noteName, folderName, content) => {
   deleteNote = (noteId) => {
     console.log('deleteNote clicked')
     const notesRemaining = this.state.newNotes.filter(note =>  note.id !== noteId)
-    this.setState({newNotes: notesRemaining});
+    this.setState({newNotes: notesRemaining, notesInFolder: notesRemaining });
 
   }
-
 
   updatePath(path) {
     this.setState({path})
