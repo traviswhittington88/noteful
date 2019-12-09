@@ -5,6 +5,9 @@ import NotefulContext from './NotefulContext';
 import Moment from 'react-moment';
 import 'moment-timezone';
 
+
+
+
 export default class NoteListPage extends React.Component {
    static contextType = NotefulContext;
    render() {

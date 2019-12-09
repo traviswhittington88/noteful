@@ -28,9 +28,10 @@ export default class AddFolder extends React.Component {
           }}
           >
           <label htmlFor="folderName">Folder Name: 
+           {' '}
           <input type="text" name="folderName" ref={this.folderNameInput} required />
           </label>
-          <input type="submit" defaultValue="Submit"  />
+          <input className='submit' type="submit" defaultValue="Submit"  />
           </form>) 
         }}
         </NotefulContext.Consumer>

@@ -1,9 +1,14 @@
 .AddFolderApp {
     height: 100vh;
     color: white;
- 
+    margin: 0 auto;
+    display: flex;
 }
 
 .AddFolderForm {
-    display: flex;
+    align-self: center;
+}
+
+.submit {
+    margin-left: 5px;
 }
