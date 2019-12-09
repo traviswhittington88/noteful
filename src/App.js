@@ -40,7 +40,7 @@ handleAddNote = (noteName, folderName, content) => {
         'Content-Type': 'application/json'
       }
     } 
-    fetch(`http://localhost:9090/notes`,obj)
+    fetch(`http://localhost:8000/api/notes`,obj)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -67,7 +67,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
     }
     
-    fetch(`http://localhost:9090/folders`,obj)
+    fetch(`http://localhost:8000/api/folders`,obj)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -84,7 +84,7 @@ handleAddNote = (noteName, folderName, content) => {
       })
     .catch(error => {this.setState({error: error.message})})
 
-    fetch('http://localhost:9090/folders')
+    fetch('http://localhost:8000/api/folders')
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -103,7 +103,7 @@ handleAddNote = (noteName, folderName, content) => {
   }
 
   handleClickedTitle = () => {
-    fetch('http://localhost:9090/notes')
+    fetch('http://localhost:8000/api/notes')
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -139,7 +139,7 @@ handleAddNote = (noteName, folderName, content) => {
 
   componentDidMount() {
     
-    fetch('http://localhost:9090/folders')
+    fetch('http://localhost:8000/api/folders')
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -149,7 +149,7 @@ handleAddNote = (noteName, folderName, content) => {
     .then(folders => this.setState({folders:folders, newFolders: folders}))
     .catch(err => {this.setState({error: err.message})})
 
-    fetch('http://localhost:9090/notes')
+    fetch('http://localhost:8000/api/notes')
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
