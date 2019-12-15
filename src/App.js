@@ -1,17 +1,18 @@
 import React from 'react';
 import { Route } from 'react-router-dom'
-import NoteListPage from './NoteListPage'
-import NoteListPageAlt from './NoteListPageAlt'
+import NoteListPage from './Notes/NoteListPage'
+import NoteListPageAlt from './Notes/NoteListPageAlt'
 import Header from './Header'
-import Sidebar from './Folder_Sidebar'
-import NoteSidebar from './Note_Sidebar'
+import Sidebar from './Folders/Sidebar'
+import NoteSidebar from './Notes/Note_Sidebar'
 import './dummy-store'
 import './App.css';
-import NoteContentPage from './NoteContentPage';
+import NoteContentPage from './Notes/NoteContentPage';
 import NotefulContext from './NotefulContext'
-import AddFolder from './AddFolder';
-import AddNote from './AddNote';
+import AddFolder from './Folders/AddFolder';
+import AddNote from './Notes/AddNote';
 import ErrorBoundary from './ErrorBoundary';
+import config from './config'
 
 class App extends React.Component {
  constructor(props) {
@@ -31,16 +32,18 @@ class App extends React.Component {
 
 handleAddNote = (noteName, folderName, content) => {
     const folderOfNote = this.state.newFolders.filter(folder => {return folder.name ===  folderName})
-    const folderId = folderOfNote[0].id;  
+    console.log(folderOfNote)
+    const folderid = folderOfNote[0].id;
+    console.log(folderid)
 
     const obj = {
       method: 'POST',
-      body: JSON.stringify({name: noteName, folderId: folderId, content: content}),
+      body: JSON.stringify({name: noteName, folderid, content }),
       headers: {
         'Content-Type': 'application/json'
       }
     } 
-    fetch(`http://localhost:9090/notes`,obj)
+    fetch(`${config.API_ENDPOINT}api/notes`,obj)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -48,9 +51,11 @@ handleAddNote = (noteName, folderName, content) => {
       return res.json();
      
     })
-    .then(newNote => {  const noteList = this.state.newNotes.map(note => {return note})
+    .then(newNote => {  
+                const noteList = this.state.newNotes.map(note => note)
                 noteList.push(newNote)
-                const notesInFolderList = this.state.notesInFolder.map(note => {return note})
+                console.log(newNote)
+                const notesInFolderList = this.state.notesInFolder.map(note => note)
                 notesInFolderList.push(newNote)
                 this.setState({notesInFolder: notesInFolderList})
                 this.setState({ newNotes: noteList })
@@ -59,6 +64,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
 
   handleAddFolder = (folderName) => { 
+    console.log('handleAddFolder called')
     const obj = {
       method: 'POST',
       body: JSON.stringify({name: folderName}),
@@ -67,7 +73,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
     }
     
-    fetch(`http://localhost:9090/folders`,obj)
+    fetch(`${config.API_ENDPOINT}api/folders`,obj)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -84,7 +90,7 @@ handleAddNote = (noteName, folderName, content) => {
       })
     .catch(error => {this.setState({error: error.message})})
 
-    fetch('http://localhost:9090/folders')
+    /*fetch(`${config.API_ENDPOINT}api/folders`)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -93,17 +99,20 @@ handleAddNote = (noteName, folderName, content) => {
     })
     .then(folders => console.log(folders))
     .catch(err => {this.setState({error: err.message})})
-    console.log(this.state.folders);
+    console.log(this.state.folders); */
   
   }
   
-  handleClickedFolder = (folderId, name) => {
-    const newNoteList = this.state.newNotes.filter(note => note.folderId === folderId)
+  handleClickedFolder = (folderid, name) => {
+    console.log('newNotes', this.state.newNotes, 'folderid',folderid, 'notes',this.state.notes[0].folderid)
+    const newNoteList = this.state.newNotes.filter(note => note.folderid === folderid)
+    console.log('newNoteList', newNoteList)
     this.setState({ notesInFolder:newNoteList, folderName:name})
+    console.log(this.state.notesInFolder,newNoteList,this.state.newNotes)
   }
 
   handleClickedTitle = () => {
-    fetch('http://localhost:9090/notes')
+    fetch(`${config.API_ENDPOINT}api/notes`)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -118,14 +127,20 @@ handleAddNote = (noteName, folderName, content) => {
    
     const noteItem= this.state.newNotes.filter(note => note.id === noteId)
     this.setState({noteSelected:noteItem})
-    const folderIdOfNote = noteItem[0].folderId;
-    const folderOfNote = this.state.newFolders.filter(folder => folder.id === folderIdOfNote)
+    const folderidOfNote = noteItem[0].folderid;
+    const folderOfNote = this.state.newFolders.filter(folder => folder.id === folderidOfNote)
                         .map(item => {return item.name} )
     const folderName = folderOfNote.join();
     this.setState({folderOfNote: folderName});
   }
  
   deleteNote = (noteId) => {
+    fetch(`${config.API_ENDPOINT}api/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
     console.log('deleteNote clicked')
     const notesRemaining = this.state.newNotes.filter(note =>  note.id !== noteId)
     this.setState({newNotes: notesRemaining, notesInFolder: notesRemaining });
@@ -138,7 +153,7 @@ handleAddNote = (noteName, folderName, content) => {
 
   componentDidMount() {
     
-    fetch('http://localhost:9090/folders')
+    fetch(`${config.API_ENDPOINT}api/folders`)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
@@ -148,15 +163,18 @@ handleAddNote = (noteName, folderName, content) => {
     .then(folders => this.setState({ folders:folders, newFolders: folders }))
     .catch(err => {this.setState({error: err.message})})
 
-    fetch('http://localhost:9090/notes')
+    fetch(`${config.API_ENDPOINT}api/notes`)
     .then(res => {
       if(!res.ok) {
         throw new Error(res.statusText)
       }
       return res.json()
     })
-    .then(notes => this.setState({notes: notes, newNotes: notes }))
+    .then(notes => {console.log('notes', notes)
+      this.setState({notes: notes, newNotes: notes })})
     .catch(err => {this.setState({error: err.message})})
+    
+
   }
   render() {
     const contextValue = {
@@ -232,7 +250,7 @@ handleAddNote = (noteName, folderName, content) => {
       />
     
       <Route
-        path='/:folderId/note/:notename'
+        path='/:folderid/note/:notename'
         render={( { history }) => 
           <React.Fragment>
             <NoteSidebar history={ history } />

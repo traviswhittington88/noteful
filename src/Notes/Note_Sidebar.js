@@ -1,6 +1,6 @@
 import React from 'react';
 import './Note_Sidebar.css';
-import NotefulContext from './NotefulContext';
+import NotefulContext from '../NotefulContext';
 import PropTypes from 'prop-types';
 
 export default class NoteSideBar extends React.Component {

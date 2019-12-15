@@ -1,6 +1,6 @@
 import React from 'react';
 import './AddFolder.css';
-import NotefulContext from './NotefulContext';
+import NotefulContext from '../NotefulContext';
 import PropTypes from 'prop-types';
 
 export default class AddFolder extends React.Component {

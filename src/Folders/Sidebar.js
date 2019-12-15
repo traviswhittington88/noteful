@@ -1,7 +1,7 @@
 import React from 'react';
 import './Folder_Sidebar.css'
 import { Link } from 'react-router-dom';
-import NotefulContext from './NotefulContext';
+import NotefulContext from '../NotefulContext';
 
 export default class Sidebar extends React.Component  {
   static contextType = NotefulContext;
@@ -10,7 +10,9 @@ handle
 render() {
   
   const { folders } = this.context;
+  console.log('folders',folders)
   const folderItems = folders.map(folder => {
+    console.log(folder)
     return (
     <NotefulContext.Consumer key={folder.id}>
     {(value) => {

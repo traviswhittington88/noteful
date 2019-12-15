@@ -1,8 +1,9 @@
 import React from 'react';
-import NotefulContext from './NotefulContext';
+import NotefulContext from '../NotefulContext';
 import './AddNote.css';
+import PropTypes from 'prop-types';
 
-class AddNoteAlt extends React.Component {
+class AddNote extends React.Component {
   
     static contextType = NotefulContext;
 
@@ -19,7 +20,7 @@ class AddNoteAlt extends React.Component {
         const folderOfNote = this.folderOfNoteInput.current.value;
         const noteContent = this.noteContentInput.current.value;
         this.context.onAddNote(noteName,folderOfNote,noteContent);
-        this.props.history.push(`/folder/${folderOfNote}`)
+        this.props.history.goBack();
     }
 
     render() {
@@ -46,7 +47,7 @@ class AddNoteAlt extends React.Component {
                                 aria-required="true"
                                 aria-describedby="nnError"
                                 ref={this.noteNameInput} 
-                                defaultValue="My New Note" 
+                                placeholder="My New Note" 
                                 required
                                 />
                                 <div
@@ -71,5 +72,8 @@ class AddNoteAlt extends React.Component {
     }
 }
 
-export default AddNoteAlt;
+export default AddNote;
 
+AddNote.propTypes = {
+    history: PropTypes.object.isRequired,
+}
