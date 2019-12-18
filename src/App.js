@@ -13,6 +13,7 @@ import AddFolder from './Folders/AddFolder';
 import AddNote from './Notes/AddNote';
 import ErrorBoundary from './ErrorBoundary';
 import config from './config'
+import AddNoteAlt from './Notes/AddNoteAlt';
 
 class App extends React.Component {
  constructor(props) {
@@ -281,6 +282,15 @@ handleAddNote = (noteName, folderName, content) => {
         render={({ history }) => 
           <React.Fragment>
             <AddNote history={ history } />
+          </React.Fragment>
+        }
+        />
+
+<Route 
+        path='/addnotealt'
+        render={({ history }) => 
+          <React.Fragment>
+            <AddNoteAlt history={ history } />
           </React.Fragment>
         }
         />

@@ -51,7 +51,7 @@ export default class NoteListPage extends React.Component {
         >
           <Link 
             label="addnote"
-            to={'/addnote'}
+            to={'/addnotealt'}
           >
             Add Note
           </Link> 
