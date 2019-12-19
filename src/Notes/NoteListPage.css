@@ -1,6 +1,7 @@
 
-.container {
-    display: flex;
+.Container {
+ margin-top: 50px;
+ width: 100%;
 }
 
 .Nav__container {

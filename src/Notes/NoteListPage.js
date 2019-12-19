@@ -43,7 +43,7 @@ export default class NoteListPage extends React.Component {
         </NotefulContext.Consumer>
       )})
     return (
-
+    <div className='Container'>
       <ul className='Note_list'>
         {noteItems}
         <button
@@ -58,6 +58,7 @@ export default class NoteListPage extends React.Component {
           </Link> 
         </button>
       </ul>
+      </div>
     )
    }
   }

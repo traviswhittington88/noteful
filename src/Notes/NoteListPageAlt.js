@@ -1,5 +1,5 @@
 import React from 'react';
-import './NoteListPage.css'
+import '../Notes/NoteListPageAlt.css'
 import { Link } from 'react-router-dom'
 import NotefulContext from '../NotefulContext';
 import Moment from 'react-moment';
@@ -7,8 +7,7 @@ import 'moment-timezone';
 
 
 
-
-export default class NoteListPage extends React.Component {
+export default class NoteListPageAlt extends React.Component {
    static contextType = NotefulContext;
 
    constructor(props) {
@@ -60,6 +59,7 @@ export default class NoteListPage extends React.Component {
         </NotefulContext.Consumer>
       )})
     return (
+      <div className='Container'>
       <ul className='Note_list'>
         {noteItems}
         <button
@@ -74,6 +74,7 @@ export default class NoteListPage extends React.Component {
           </Link> 
         </button>
       </ul>
+      </div>
     )
    }
 }
