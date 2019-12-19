@@ -17,13 +17,14 @@ class AddNoteAlt extends React.Component {
         event.preventDefault();
         const noteName = this.noteNameInput.current.value;
         const folderOfNote = this.folderOfNoteInput.current.value;
+        console.log('folderOfNote', folderOfNote)
         const noteContent = this.noteContentInput.current.value;
         this.context.onAddNote(noteName,folderOfNote,noteContent);
         this.props.history.push(`/folder/${folderOfNote}`)
     }
 
     render() {
-        
+        console.log('addNoteAlt called')
         return (
             <div className='addNoteApp'>
                 <NotefulContext.Consumer>

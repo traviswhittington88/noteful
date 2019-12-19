@@ -10,10 +10,27 @@ import 'moment-timezone';
 
 export default class NoteListPage extends React.Component {
    static contextType = NotefulContext;
+
+   constructor(props) {
+    super(props)
+   }
+
+  handleDelete = note => {
+    const { folders } = this.context
+    const folderIdOfNote = note.folderid
+
+    const folderOfNote = folders.filter(folder => folder.id === folderIdOfNote)
+    const folderNameOfNote = folderOfNote[0].name                                        
+  
+    this.context.onDelete(note.id, folderIdOfNote, folderNameOfNote)
+    this.props.history.push(`/folder/${folderNameOfNote}`)
+  }
+
    render() {
     console.log('notelistpagealt called')
-    console.log(this.context.notesInFolder)
+    console.log('NotesInFolder', this.context.notesInFolder)
     const { notesInFolder } = this.context
+    console.log(notesInFolder)
     const noteItems = notesInFolder.map(note => {
       return (
         <NotefulContext.Consumer key={note.id}>
@@ -23,7 +40,7 @@ export default class NoteListPage extends React.Component {
                 <div className='Note'>
                 <Link 
                   label="folderIdOfNote/note/noteName"
-                  to={`/${note.folderId}/note/${note.name}`}
+                  to={`/${note.folderid}/note/${note.name}`}
                   id={note.id}
                   onClick={(e)=> this.context.selectNote(note.id)}
                 >
@@ -35,7 +52,7 @@ export default class NoteListPage extends React.Component {
                   </p> 
                 </Link>    
                 <button className='Note_delete'
-                  onClick={()=> value.onDelete(note.id)}><p>Remove</p></button>     
+                  onClick={()=> this.handleDelete(note)}><p>Remove</p></button>     
                 </div>
               </li>
             )
@@ -59,4 +76,4 @@ export default class NoteListPage extends React.Component {
       </ul>
     )
    }
-  }
+}

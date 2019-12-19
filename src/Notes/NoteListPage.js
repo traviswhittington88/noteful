@@ -9,8 +9,6 @@ export default class NoteListPage extends React.Component {
  
    static contextType = NotefulContext;
    render() {
-     console.log('notelistpage called')
-     console.log(this.context.notes)
     const { notes } = this.context
     const noteItems = notes.map(note => {
       return (
@@ -34,7 +32,7 @@ export default class NoteListPage extends React.Component {
                 </Link>    
                 <button 
                   className='Note_delete'
-                  onClick={() => value.onDelete(note.id)}
+                  onClick={ () => value.onDelete(note.id) }
                 >
                   <p>Remove</p>
                 </button>     

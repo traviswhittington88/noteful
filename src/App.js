@@ -33,9 +33,9 @@ class App extends React.Component {
 
 handleAddNote = (noteName, folderName, content) => {
     const folderOfNote = this.state.newFolders.filter(folder => {return folder.name ===  folderName})
-    console.log(folderOfNote)
+    
     const folderid = folderOfNote[0].id;
-    console.log(folderid)
+
 
     const obj = {
       method: 'POST',
@@ -55,7 +55,7 @@ handleAddNote = (noteName, folderName, content) => {
     .then(newNote => {  
                 const noteList = this.state.newNotes.map(note => note)
                 noteList.push(newNote)
-                console.log(newNote)
+              
                 const notesInFolderList = this.state.notesInFolder.map(note => note)
                 notesInFolderList.push(newNote)
                 this.setState({notesInFolder: notesInFolderList})
@@ -65,7 +65,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
 
   handleAddFolder = (folderName) => { 
-    console.log('handleAddFolder called')
+ 
     const obj = {
       method: 'POST',
       body: JSON.stringify({name: folderName}),
@@ -82,7 +82,7 @@ handleAddNote = (noteName, folderName, content) => {
       return res.json();
     })
     .then(folder => {
-      console.log(folder);
+    
       folder.name = folderName
       const newFoldersList = this.state.newFolders.map(folder => {return folder});
       newFoldersList.push(folder);
@@ -105,11 +105,11 @@ handleAddNote = (noteName, folderName, content) => {
   }
   
   handleClickedFolder = (folderid, name) => {
-    console.log('newNotes', this.state.newNotes, 'folderid',folderid, 'notes',this.state.notes[0].folderid)
+    
     const newNoteList = this.state.newNotes.filter(note => note.folderid === folderid)
-    console.log('newNoteList', newNoteList)
+
     this.setState({ notesInFolder:newNoteList, folderName:name})
-    console.log(this.state.notesInFolder,newNoteList,this.state.newNotes)
+
   }
 
   handleClickedTitle = () => {
@@ -135,7 +135,7 @@ handleAddNote = (noteName, folderName, content) => {
     this.setState({folderOfNote: folderName});
   }
  
-  deleteNote = (noteId) => {
+  deleteNote = (noteId, folderid, foldername) => {
     fetch(`${config.API_ENDPOINT}api/notes/${noteId}`, {
       method: 'DELETE',
       headers: {
@@ -144,8 +144,11 @@ handleAddNote = (noteName, folderName, content) => {
     })
     console.log('deleteNote clicked')
     const notesRemaining = this.state.newNotes.filter(note =>  note.id !== noteId)
-    this.setState({newNotes: notesRemaining, notesInFolder: notesRemaining });
-
+    console.log('NotesInFolder',this.state.notesInFolder)
+    const notesInFolderList = this.state.notesInFolder.filter(note => note.id !== noteId)
+    console.log('NotesInFolderList',notesInFolderList)
+    this.setState({ notesInFolder: notesInFolderList })
+    this.setState({ newNotes: notesRemaining });
   }
 
   updatePath(path) {
@@ -171,7 +174,7 @@ handleAddNote = (noteName, folderName, content) => {
       }
       return res.json()
     })
-    .then(notes => {console.log('notes', notes)
+    .then(notes => {
       this.setState({notes: notes, newNotes: notes })})
     .catch(err => {this.setState({error: err.message})})
     
@@ -234,7 +237,7 @@ handleAddNote = (noteName, folderName, content) => {
 
       <Route 
       path='/folder/:foldername'
-      render={( { match }) =>
+      render={( { match, history }) =>
         <React.Fragment>
           <Sidebar />
           <div className='column__wrapper'>
@@ -244,7 +247,7 @@ handleAddNote = (noteName, folderName, content) => {
           <Header/>
           </header>
           <main className='App__main'>
-          <NoteListPageAlt/>
+          <NoteListPageAlt history={ history }/>
           </main>
           </div>
         </React.Fragment> }
@@ -286,14 +289,14 @@ handleAddNote = (noteName, folderName, content) => {
         }
         />
 
-<Route 
+      <Route 
         path='/addnotealt'
         render={({ history }) => 
           <React.Fragment>
             <AddNoteAlt history={ history } />
           </React.Fragment>
         }
-        />
+      />
 
       </NotefulContext.Provider>
       </ErrorBoundary>   

@@ -10,9 +10,9 @@ handle
 render() {
   
   const { folders } = this.context;
-  console.log('folders',folders)
+
   const folderItems = folders.map(folder => {
-    console.log(folder)
+
     return (
     <NotefulContext.Consumer key={folder.id}>
     {(value) => {
